@@ -1,0 +1,9 @@
+.venv/
+__pycache__/
+*.pyc
+_index/
+data/_indexes
+.env
+.railwayignore
+Procfile
+all_python_files.md
