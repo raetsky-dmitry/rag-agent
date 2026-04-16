@@ -17,7 +17,7 @@ class MessageResponse(BaseModel):
 
 @app.get("/")
 def health_check():
-    return {"status": "ok", "service": "ЭлектроМощь RAG Agent"}
+    return {"status": "ok", "service": "RAG Agent is successfully started!"}
 
 @app.post("/chat")
 def chat(request: MessageRequest) -> MessageResponse:
