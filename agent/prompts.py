@@ -3,7 +3,7 @@ from app.config import get_settings
 
 settings = get_settings()
 
-def get_system_prompt(session_id: str) -> str:
+def get_system_prompt() -> str:
     return f"""Ты консультант интернет-магазина электроники 'ЭлектроМощь'.
 
 Правила работы:
@@ -22,6 +22,5 @@ def get_system_prompt(session_id: str) -> str:
 
 Для справки:
 - Текущая дата: {datetime.now().strftime('%d.%m.%Y %H:%M')}
-- session_id: {session_id}
 
 """

@@ -1,5 +1,5 @@
 from langchain.agents import create_agent
-from agent.answer import print_agent_answer
+from agent.answer import print_agent_answer, get_agent_answer
 def start_chat (agent:  create_agent.AgentExecutor, session_id: str, stop_comands: list):
 	print("****************************")
 	print("*         CHAT START       *")
@@ -13,7 +13,8 @@ def start_chat (agent:  create_agent.AgentExecutor, session_id: str, stop_comand
 			break
 		
 		else:
-			print_agent_answer(agent = agent, session_id = session_id, message = user_input)
+			agent_answer = get_agent_answer(agent = agent, session_id = session_id, message = user_input, print_trace = True, print_tool_details = True)
+			print (f"Агент: {agent_answer}")
 
 	print()
 	print("****************************")

@@ -1,9 +1,10 @@
 from fastapi import FastAPI
 from pydantic import BaseModel
-from main import agent
+from agent.agent import get_agent
+
 from agent.answer import get_agent_answer
-from chat.session import get_session_id
 import uuid
+
 
 app = FastAPI()
 
@@ -19,10 +20,13 @@ class MessageResponse(BaseModel):
 def health_check():
     return {"status": "ok", "service": "RAG Agent is successfully started!"}
 
+#  Создаем агента
+agent = get_agent()
+print(" -- создали агента")
+
 @app.post("/chat")
 def chat(request: MessageRequest) -> MessageResponse:
     session_id = request.session_id or str(uuid.uuid4())
-
     try:
         answer = get_agent_answer(
             agent=agent,
