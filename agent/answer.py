@@ -51,9 +51,9 @@ def print_agent_answer(agent:  create_agent.AgentExecutor, session_id: str, mess
 # Ответ ИИ без команды print (для API чата)
 
 def get_agent_answer(agent, session_id: str, message: str, print_trace: bool = False, print_tool_details: bool = False) -> str:
-    user_msg = f"{message} \n- session_id: {session_id}"
+    # user_msg = f"{message} \n- session_id: {session_id}"
     agent_response = agent.invoke(
-        {"messages": [{"role": "user", "content": user_msg}]},
+        {"messages": [{"role": "user", "content": message}]},
         config={"configurable": {"thread_id": session_id}},
     )
     # return agent_response

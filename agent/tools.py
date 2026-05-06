@@ -3,6 +3,7 @@ from langchain_core.tools import tool
 from pydantic import BaseModel, Field
 from datetime import datetime, timedelta
 from typing import Optional
+from langchain_core.runnables import RunnableConfig
 
 
 # ============================================================
@@ -47,14 +48,14 @@ class CartOperationInfo(BaseModel):
     product_id: int = Field(
         description="ID товара для операций с корзиной"
     )
-    session_id: str = Field(
-        description="ID сессии пользователя"
-    )
+    # session_id: str = Field(
+    #     description="ID сессии пользователя"
+    # )
 
 class CartSummaryInfo(BaseModel):
-    session_id: str = Field(
-        description="ID сессии пользователя"
-    )
+    # session_id: str = Field(
+    #     description="ID сессии пользователя"
+    # )
     promo_code: Optional[str] = Field(
         default=None,
         description="Промокод для скидки"
@@ -105,8 +106,9 @@ def check_delivery_date(city: str) -> str:
 
 
 @tool(args_schema=CartOperationInfo)
-def add_to_cart(product_id: int, session_id: str) -> str:
+def add_to_cart(product_id: int, config: RunnableConfig) -> str:
     """Добавляет товар в корзину по его ID для указанной сессии."""
+    session_id = config["configurable"]["thread_id"]
     if product_id not in PRODUCTS:
         return f"Товар с ID {product_id} не найден."
 
@@ -141,12 +143,13 @@ def get_product_info(product_id: int) -> str:
 
 
 @tool(args_schema=CartSummaryInfo)
-def get_cart_summary(session_id: str, promo_code: Optional[str] = None) -> str:
+def get_cart_summary(config: RunnableConfig, promo_code: Optional[str] = None) -> str:
     """Возвращает состав корзины и итоговую сумму для указанной сессии. Принимает промокод для скидки."""
+    session_id = config["configurable"]["thread_id"]
     if session_id not in SESSION_CARTS or not SESSION_CARTS[session_id]:
         return "Корзина пуста."
 
-    lines = []
+    lines = [f"Корзина пользователя {session_id}:"]
     total = 0
 
     for pid in SESSION_CARTS[session_id]:
